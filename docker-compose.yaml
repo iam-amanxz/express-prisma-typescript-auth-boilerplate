@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  redis:
+    container_name: redis_store
+    image: redis:7.0.5-alpine
+    ports:
+      - 6379:6379
+    command: redis-server --save 20 1 --loglevel warning
+    volumes:
+      - redis_store:/data
+
+  postgres:
+    image: postgres:14.5
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer
+    ports:
+      - 7000:8080
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_store:
+    driver: local
