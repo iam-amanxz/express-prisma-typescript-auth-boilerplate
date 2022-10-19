@@ -1,10 +1,14 @@
 import { Router } from "express";
-import { authController as controller } from ".";
+import { container } from "tsyringe";
+import { checkSchema } from "express-validator";
 import { isAuthenticated } from "../../middleware";
+import { AuthController, authSchema } from ".";
 
 export const authRouter = (router: Router) => {
-  router.post("/sign-up", controller.signUp);
-  router.post("/sign-in", controller.signIn);
+  const controller = container.resolve(AuthController);
+
+  router.post("/sign-up", checkSchema(authSchema.signUp), controller.signUp);
+  router.post("/sign-in", checkSchema(authSchema.signIn), controller.signIn);
   router.get("/sign-out", controller.signOut);
   router.get("/me", isAuthenticated, controller.getMe);
 

@@ -1,15 +1,10 @@
-import { User } from "@prisma/client";
-import { prisma } from "../..";
-import logger from "../../logger";
+import { UserApi } from "../../api";
+import { User } from "../../api/user.api";
 
-export const userService = {
-  getUserByEmail: async (email: string): Promise<User> => {
-    const existingUser = await prisma.user.findFirst({ where: { email } });
-    if (!existingUser) {
-      logger.error("User not found");
-      throw new Error("User not found");
-    }
+export class UserService {
+  constructor(private api: UserApi) {}
 
-    return existingUser;
-  },
-};
+  async getByEmail(email: string): Promise<User | null> {
+    return this.api.findByEmail(email);
+  }
+}

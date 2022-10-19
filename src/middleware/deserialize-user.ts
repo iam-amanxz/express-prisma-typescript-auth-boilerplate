@@ -1,24 +1,26 @@
 import { NextFunction, Request, Response } from "express";
-import { userService } from "../features/user";
-import logger from "../logger";
+import { UserApi } from "../api";
+import { ResourceNotFoundException } from "../exceptions-and-responses";
+import { UserService } from "../features/user";
 
 export const deserializeUser = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  // if no session continue
-  if (!req.session) {
-    logger.debug("No session found");
+  if (!req.session?.email) {
     return next();
   }
 
-  logger.debug("Session found, deserializing user");
-  // if session fetch user and attach to the request
-  //   @ts-ignore
-  const user = await userService.getUserByEmail(req.session.email);
+  const user = await new UserService(new UserApi()).getByEmail(
+    req.session.email
+  );
 
-  //   @ts-ignore
+  if (!user) {
+    return next(new ResourceNotFoundException());
+  }
+
   req.user = user;
-  return next();
+
+  next();
 };
