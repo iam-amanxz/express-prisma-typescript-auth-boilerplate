@@ -6,6 +6,9 @@ import {
   ValidationException,
 } from "../exceptions-and-responses";
 
+/**
+ * Handles all unhandled errors. Catches errors passed by next(error)
+ */
 export const globalErrorHandler = (
   error: Error,
   req: Request,

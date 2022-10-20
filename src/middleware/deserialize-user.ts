@@ -3,6 +3,9 @@ import { UserApi } from "../api";
 import { ResourceNotFoundException } from "../exceptions-and-responses";
 import { UserService } from "../features/user";
 
+/**
+ * Fetches user data from the db and attaches to the request if logged in
+ */
 export const deserializeUser = async (
   req: Request,
   res: Response,
