@@ -3,6 +3,8 @@ import {
   ApiResponse,
   EmailExistsException,
   GenericException,
+  InvalidCredentialsException,
+  UnauthenticatedException,
   ValidationException,
 } from "../exceptions-and-responses";
 
@@ -21,10 +23,25 @@ export const globalErrorHandler = (
       .json(ApiResponse.conflict({ path: req.url, ex: error }));
   }
 
+  if (error instanceof InvalidCredentialsException) {
+    return res
+      .status(InvalidCredentialsException.code)
+      .json(ApiResponse.conflict({ path: req.url, ex: error }));
+  }
+
   if (error instanceof ValidationException) {
     return res
       .status(ValidationException.code)
       .json(ApiResponse.badValidation({ path: req.url, ex: error }));
+  }
+
+  if (error instanceof UnauthenticatedException) {
+    return res.status(UnauthenticatedException.code).json(
+      ApiResponse.unauthenticated({
+        path: req.url,
+        ex: error,
+      })
+    );
   }
 
   return res

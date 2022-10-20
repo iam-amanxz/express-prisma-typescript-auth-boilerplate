@@ -38,9 +38,10 @@ export class ResourceNotFoundException extends Error {
 export class ValidationException extends Error {
   errors: ErrorMessage[];
   static code = 400;
+  static message = "Request validation failed";
 
   constructor(errors: ErrorMessage[] = []) {
-    super("Request validation failed");
+    super(ValidationException.message);
     this.errors = errors;
   }
 }

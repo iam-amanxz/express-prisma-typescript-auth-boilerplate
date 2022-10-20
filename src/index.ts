@@ -12,6 +12,7 @@ const main = async () => {
 main()
   .then(() => {
     logger.debug(`Server is up at http://localhost:${SERVER_PORT}`);
+    db.$disconnect();
   })
   .catch(() => {
     db.$disconnect();

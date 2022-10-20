@@ -10,6 +10,7 @@ interface SignupDto {
   email: string;
   password: string;
 }
+
 interface SigninDto {
   email: string;
   password: string;
