@@ -1,4 +1,4 @@
-# Express API with session based authenticated. Powered by Prisma and Postgres database.
+# Express API with session based authentication powered by Prisma and Postgres database.
 
 ### Features
 - Feature based architecture
